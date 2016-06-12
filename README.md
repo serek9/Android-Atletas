@@ -20,11 +20,9 @@ security:
             key: a2a6c0b3627730ff7edad3f9b829c9d80969fe7a
             
             
-Then, you simply need to add some players using the AngularJS Web interface as usual.
-After that, you can query your new players from your Android application!
+
 
 TODO: 
-1. Complete CRUD
-2. Use best practices from this nice book: https://leanpub.com/retrofit-love-working-with-apis-on-android (interceptor)
+ Use best practices from this nice book: https://leanpub.com/retrofit-love-working-with-apis-on-android (interceptor)
    (https://futurestud.io/blog/retrofit-series-round-up)
 
