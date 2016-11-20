@@ -96,7 +96,7 @@ public class PlayerDetailFragment extends Fragment implements PlayerCallback {
             @Override
             public void onClick(View v) {
                 PlayerManager.getInstance(v.getContext()).deletePlayer(PlayerDetailFragment.this, mItem.getId());
-                Intent intent = new Intent(v.getContext(), Player.class);
+                Intent intent = new Intent(v.getContext(), PlayerListActivity.class);
                 startActivity(intent);
             }
         });
