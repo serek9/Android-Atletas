@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        UserToken userToken = UserLoginManager.getInstance(this.getApplicationContext()).getUserToken();
+        UserToken userToken = UserLoginManager.getInstance().getUserToken();
 
         if(userToken!=null) {
             accessToken.setText(userToken.getAccessToken());

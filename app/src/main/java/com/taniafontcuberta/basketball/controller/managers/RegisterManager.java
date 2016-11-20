@@ -22,7 +22,7 @@ public class RegisterManager {
     private RegisterManager(Context cntxt) {
         context = cntxt;
         retrofit = new Retrofit.Builder()
-                .baseUrl(CustomProperties.getInstance(context).get("app.baseUrl"))
+                .baseUrl(CustomProperties.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
 
                 .build();

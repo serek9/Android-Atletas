@@ -99,13 +99,13 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
             public void onClick(View view) {
                 switch (typeSearch.getString("id")){
                     case "name":
-                        PlayerManager.getInstance(getApplicationContext()).getPlayerByName(PlayerTopActivity.this, topAttr.getText().toString());
+                        PlayerManager.getInstance().getPlayerByName(PlayerTopActivity.this, topAttr.getText().toString());
                         break;
                     case "baskets":
-                        PlayerManager.getInstance(getApplicationContext()).getPlayersByBaskets(PlayerTopActivity.this, Integer.parseInt(topAttr.getText().toString()));
+                        PlayerManager.getInstance().getPlayersByBaskets(PlayerTopActivity.this, Integer.parseInt(topAttr.getText().toString()));
                         break;
                     case "birthdate":
-                        PlayerManager.getInstance(getApplicationContext()).getPlayersByBirthdate(PlayerTopActivity.this, topAttr.getText().toString());
+                        PlayerManager.getInstance().getPlayersByBirthdate(PlayerTopActivity.this, topAttr.getText().toString());
                         break;
                 }
 
@@ -116,7 +116,7 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        PlayerManager.getInstance(this).getAllPlayers(PlayerTopActivity.this);
+        PlayerManager.getInstance().getAllPlayers(PlayerTopActivity.this);
 
         //    PlayerManager.getInstance(this.getApplicationContext()).getAllPlayers(PlayerTopActivity.this);
     }

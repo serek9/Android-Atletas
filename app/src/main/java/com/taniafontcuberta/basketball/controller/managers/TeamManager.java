@@ -1,6 +1,5 @@
 package com.taniafontcuberta.basketball.controller.managers;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.taniafontcuberta.basketball.controller.services.TeamService;
@@ -19,13 +18,11 @@ public class TeamManager {
     private static TeamManager ourInstance;
     private List<Team> teams;
     private Retrofit retrofit;
-    private Context context;
     private TeamService teamService;
 
-    private TeamManager(Context cntxt) {
-        context = cntxt;
+    private TeamManager() {
         retrofit = new Retrofit.Builder()
-                .baseUrl(CustomProperties.getInstance(context).get("app.baseUrl"))
+                .baseUrl(CustomProperties.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
 
                 .build();
@@ -33,12 +30,10 @@ public class TeamManager {
         teamService = retrofit.create(TeamService.class);
     }
 
-    public static TeamManager getInstance(Context cntxt) {
+    public static TeamManager getInstance() {
         if (ourInstance == null) {
-            ourInstance = new TeamManager(cntxt);
+            ourInstance = new TeamManager();
         }
-
-        ourInstance.context = cntxt;
 
         return ourInstance;
     }
@@ -46,7 +41,7 @@ public class TeamManager {
     /* GET - GET ALL TEAMS */
 
     public synchronized void getAllTeams(final TeamCallback teamCallback) {
-        Call<List<Team>> call = teamService.getAllTeams(UserLoginManager.getInstance(context).getBearerToken());
+        Call<List<Team>> call = teamService.getAllTeams(UserLoginManager.getInstance().getBearerToken());
 
         call.enqueue(new Callback<List<Team>>() {
             @Override
@@ -84,7 +79,7 @@ public class TeamManager {
     /* POST - CREATE PLAYER */
 
     public synchronized void createTeam(final TeamCallback teamCallback,Team team) {
-        Call<Team> call = teamService.createTeam(UserLoginManager.getInstance(context).getBearerToken(), team);
+        Call<Team> call = teamService.createTeam(UserLoginManager.getInstance().getBearerToken(), team);
         call.enqueue(new Callback<Team>() {
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {
@@ -109,7 +104,7 @@ public class TeamManager {
 
     /* PUT - UPDATE TEAM */
     public synchronized void updateTeam(final TeamCallback teamCallback, Team team) {
-        Call <Team> call = teamService.updatePlayer(UserLoginManager.getInstance(context).getBearerToken(), team);
+        Call <Team> call = teamService.updatePlayer(UserLoginManager.getInstance().getBearerToken(), team);
         call.enqueue(new Callback<Team>() {
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {

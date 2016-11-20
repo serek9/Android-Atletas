@@ -135,7 +135,7 @@ public class PlayerListActivity extends AppCompatActivity implements PlayerCallb
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        PlayerManager.getInstance(this.getApplicationContext()).getAllPlayers(PlayerListActivity.this);
+        PlayerManager.getInstance().getAllPlayers(PlayerListActivity.this);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {

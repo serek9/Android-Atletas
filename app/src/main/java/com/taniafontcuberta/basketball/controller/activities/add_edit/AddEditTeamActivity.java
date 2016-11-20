@@ -54,7 +54,7 @@ public class AddEditTeamActivity extends AppCompatActivity implements TeamCallba
             setTitle("Edit Team");
         }
         setContentView(R.layout.activity_add_edit_team);
-        TeamManager.getInstance(this.getApplicationContext()).getAllTeams(AddEditTeamActivity.this);
+        TeamManager.getInstance().getAllTeams(AddEditTeamActivity.this);
         team = new Team();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -83,8 +83,8 @@ public class AddEditTeamActivity extends AppCompatActivity implements TeamCallba
                 addButton.setText("Edit Team");
 
                 id = extras.getString("id");
-                nameView.setText(TeamManager.getInstance(this).getTeam(id).getName());
-                localityView.setText(TeamManager.getInstance(this).getTeam(id).getLocality());
+                nameView.setText(TeamManager.getInstance().getTeam(id).getName());
+                localityView.setText(TeamManager.getInstance().getTeam(id).getLocality());
         }
 
         addButton.setOnClickListener(new OnClickListener() {
@@ -143,11 +143,11 @@ public class AddEditTeamActivity extends AppCompatActivity implements TeamCallba
             team.setLocality(locality);
 
             if(extras.getString("type").equals("add")) {
-                TeamManager.getInstance(v.getContext()).createTeam(AddEditTeamActivity.this, team);
+                TeamManager.getInstance().createTeam(AddEditTeamActivity.this, team);
                 Toast.makeText(AddEditTeamActivity.this, "Created :  " + team.getName(), Toast.LENGTH_LONG).show();
             }else{
                 team.setId(Long.parseLong(id));
-                TeamManager.getInstance(v.getContext()).updateTeam(AddEditTeamActivity.this, team);
+                TeamManager.getInstance().updateTeam(AddEditTeamActivity.this, team);
                 Toast.makeText(AddEditTeamActivity.this, "Edited  :   " + team.getName(), Toast.LENGTH_LONG).show();
 
             }

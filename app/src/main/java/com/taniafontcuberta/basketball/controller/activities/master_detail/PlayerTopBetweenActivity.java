@@ -79,9 +79,9 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
             public void onClick(View view) {
 
                 if (topAttr2.getText().toString().equals("")) {
-                    PlayerManager.getInstance(getApplicationContext()).getPlayersByBirthdate(PlayerTopBetweenActivity.this, topAttr.getText().toString());
+                    PlayerManager.getInstance().getPlayersByBirthdate(PlayerTopBetweenActivity.this, topAttr.getText().toString());
                 } else {
-                    PlayerManager.getInstance(getApplicationContext()).getPlayersByBirthdateBetween(PlayerTopBetweenActivity.this, topAttr.getText().toString(), topAttr2.getText().toString());
+                    PlayerManager.getInstance().getPlayersByBirthdateBetween(PlayerTopBetweenActivity.this, topAttr.getText().toString(), topAttr2.getText().toString());
 
                 }
             }
@@ -91,7 +91,7 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        PlayerManager.getInstance(this).getAllPlayers(PlayerTopBetweenActivity.this);
+        PlayerManager.getInstance().getAllPlayers(PlayerTopBetweenActivity.this);
 
         //    PlayerManager.getInstance(this.getApplicationContext()).getAllPlayers(PlayerTopActivity.this);
     }

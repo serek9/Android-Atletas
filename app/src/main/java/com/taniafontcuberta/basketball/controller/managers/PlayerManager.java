@@ -1,6 +1,5 @@
 package com.taniafontcuberta.basketball.controller.managers;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.taniafontcuberta.basketball.controller.services.PlayerService;
@@ -19,13 +18,11 @@ public class PlayerManager {
     private static PlayerManager ourInstance;
     private List<Player> players;
     private Retrofit retrofit;
-    private Context context;
     private PlayerService playerService;
 
-    private PlayerManager(Context cntxt) {
-        context = cntxt;
+    private PlayerManager() {
         retrofit = new Retrofit.Builder()
-                .baseUrl(CustomProperties.getInstance(context).get("app.baseUrl"))
+                .baseUrl(CustomProperties.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
 
                 .build();
@@ -33,12 +30,10 @@ public class PlayerManager {
         playerService = retrofit.create(PlayerService.class);
     }
 
-    public static PlayerManager getInstance(Context cntxt) {
+    public static PlayerManager getInstance() {
         if (ourInstance == null) {
-            ourInstance = new PlayerManager(cntxt);
+            ourInstance = new PlayerManager();
         }
-
-        ourInstance.context = cntxt;
 
         return ourInstance;
     }
@@ -46,7 +41,7 @@ public class PlayerManager {
     /* GET - GET ALL PLAYER */
 
     public synchronized void getAllPlayers(final PlayerCallback playerCallback) {
-        Call<List<Player>> call = playerService.getAllPlayer(UserLoginManager.getInstance(context).getBearerToken());
+        Call<List<Player>> call = playerService.getAllPlayer(UserLoginManager.getInstance().getBearerToken());
 
         call.enqueue(new Callback<List<Player>>() {
             @Override
@@ -84,7 +79,7 @@ public class PlayerManager {
     /* POST - CREATE PLAYER */
 
     public synchronized void createPlayer(final PlayerCallback playerCallback,Player player) {
-        Call<Player> call = playerService.createPlayer(UserLoginManager.getInstance(context).getBearerToken(), player);
+        Call<Player> call = playerService.createPlayer(UserLoginManager.getInstance().getBearerToken(), player);
         call.enqueue(new Callback<Player>() {
             @Override
             public void onResponse(Call<Player> call, Response<Player> response) {
@@ -110,7 +105,7 @@ public class PlayerManager {
 
     /* PUT - UPDATE PLAYER */
     public synchronized void updatePlayer(final PlayerCallback playerCallback, Player player) {
-        Call <Player> call = playerService.updatePlayer(UserLoginManager.getInstance(context).getBearerToken() ,player);
+        Call <Player> call = playerService.updatePlayer(UserLoginManager.getInstance().getBearerToken() ,player);
         call.enqueue(new Callback<Player>() {
             @Override
             public void onResponse(Call<Player> call, Response<Player> response) {
@@ -135,7 +130,7 @@ public class PlayerManager {
 
     /* DELETE - DELETE PLAYER */
     public synchronized void deletePlayer(final PlayerCallback playerCallback, Long id) {
-        Call <Void> call = playerService.deletePlayer(UserLoginManager.getInstance(context).getBearerToken() ,id);
+        Call <Void> call = playerService.deletePlayer(UserLoginManager.getInstance().getBearerToken() ,id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -162,7 +157,7 @@ public class PlayerManager {
 
     public synchronized void getPlayerByName(final PlayerCallback playerCallback,String name) {
         // Call<List<Apuesta>> call = playerService.getAllPlayer(UserLoginManager.getInstance(context).getBearerToken());
-        Call<List<Player>> call = playerService.getPlayerByName(UserLoginManager.getInstance(context).getBearerToken(), name);
+        Call<List<Player>> call = playerService.getPlayerByName(UserLoginManager.getInstance().getBearerToken(), name);
         call.enqueue(new Callback<List<Player>>() {
             @Override
             public void onResponse(Call<List<Player>> call, Response<List<Player>> response) {
@@ -190,7 +185,7 @@ public class PlayerManager {
     /* GET - TOP PLAYERS BY X BASKETS */
 
     public synchronized void getPlayersByBaskets(final PlayerCallback playerCallback,Integer baskets) {
-        Call<List<Player>> call = playerService.getPlayersByBaskets(UserLoginManager.getInstance(context).getBearerToken(), baskets);
+        Call<List<Player>> call = playerService.getPlayersByBaskets(UserLoginManager.getInstance().getBearerToken(), baskets);
         call.enqueue(new Callback<List<Player>>() {
             @Override
             public void onResponse(Call<List<Player>> call, Response<List<Player>> response) {
@@ -219,7 +214,7 @@ public class PlayerManager {
     /* GET - TOP PLAYERS BY X DATEBIRTH */
 
     public synchronized void getPlayersByBirthdate(final PlayerCallback playerCallback, String birthdate) {
-        Call<List<Player>> call = playerService.getPlayersByBirthdate(UserLoginManager.getInstance(context).getBearerToken(), birthdate);
+        Call<List<Player>> call = playerService.getPlayersByBirthdate(UserLoginManager.getInstance().getBearerToken(), birthdate);
         call.enqueue(new Callback<List<Player>>() {
             @Override
             public void onResponse(Call<List<Player>> call, Response<List<Player>> response) {
@@ -247,7 +242,7 @@ public class PlayerManager {
     /* GET - TOP PLAYERS BY DATEBIRTH BETWEEN X AND Y */
 
     public synchronized void getPlayersByBirthdateBetween(final PlayerCallback playerCallback,String birthdate, String birthdate2) {
-        Call<List<Player>> call = playerService.getPlayersByBirthdateBetween(UserLoginManager.getInstance(context).getBearerToken(), birthdate, birthdate2);
+        Call<List<Player>> call = playerService.getPlayersByBirthdateBetween(UserLoginManager.getInstance().getBearerToken(), birthdate, birthdate2);
         call.enqueue(new Callback<List<Player>>() {
             @Override
             public void onResponse(Call<List<Player>> call, Response<List<Player>> response) {

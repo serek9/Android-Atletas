@@ -79,7 +79,7 @@ public class AddEditActivity extends AppCompatActivity implements PlayerCallback
         setContentView(R.layout.activity_add_edit);
 
         /* GET ALL TEAMS */
-        TeamManager.getInstance(this.getApplicationContext()).getAllTeams(AddEditActivity.this);
+        TeamManager.getInstance().getAllTeams(AddEditActivity.this);
 
         player = new Player();
 
@@ -131,12 +131,12 @@ public class AddEditActivity extends AppCompatActivity implements PlayerCallback
                 addButton.setText("Edit Player");
 
                 id = extras.getString("id");
-                nameView.setText(PlayerManager.getInstance(this).getPlayer(id).getName());
-                basketsView.setText(PlayerManager.getInstance(this).getPlayer(id).getBaskets().toString());
-                reboundsView.setText(PlayerManager.getInstance(this).getPlayer(id).getRebounds().toString());
-                assistsView.setText(PlayerManager.getInstance(this).getPlayer(id).getAssists().toString());
+                nameView.setText(PlayerManager.getInstance().getPlayer(id).getName());
+                basketsView.setText(PlayerManager.getInstance().getPlayer(id).getBaskets().toString());
+                reboundsView.setText(PlayerManager.getInstance().getPlayer(id).getRebounds().toString());
+                assistsView.setText(PlayerManager.getInstance().getPlayer(id).getAssists().toString());
 
-                switch (PlayerManager.getInstance(this).getPlayer(id).getFieldPosition()) {
+                switch (PlayerManager.getInstance().getPlayer(id).getFieldPosition()) {
                     case "PointGuard":
                         fieldPositionView.setSelection(adapter.getPosition("PointGuard"));
                         break;
@@ -156,7 +156,7 @@ public class AddEditActivity extends AppCompatActivity implements PlayerCallback
 
 
             /* Get birthDate, split by "-", and update datePicker */
-                String birthdateGet = PlayerManager.getInstance(this).getPlayer(id).getBirthdate().toString();
+                String birthdateGet = PlayerManager.getInstance().getPlayer(id).getBirthdate().toString();
                 String[] date = birthdateGet.split("-");
                 birthdateView.updateDate(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
 
@@ -266,11 +266,11 @@ public class AddEditActivity extends AppCompatActivity implements PlayerCallback
             player.setBirthdate(birthdate);
 
             if (extras.getString("type").equals("add")) {
-                PlayerManager.getInstance(v.getContext()).createPlayer(AddEditActivity.this, player);
+                PlayerManager.getInstance().createPlayer(AddEditActivity.this, player);
                 Toast.makeText(AddEditActivity.this, "Created :  " + player.getName(), Toast.LENGTH_LONG).show();
             } else {
                 player.setId(Long.parseLong(id));
-                PlayerManager.getInstance(v.getContext()).updatePlayer(AddEditActivity.this, player);
+                PlayerManager.getInstance().updatePlayer(AddEditActivity.this, player);
                 Toast.makeText(AddEditActivity.this, "Edited  :   " + player.getName(), Toast.LENGTH_LONG).show();
 
             }
@@ -297,7 +297,7 @@ public class AddEditActivity extends AppCompatActivity implements PlayerCallback
         teamView.setAdapter(adapterTeams);
 
         if (extras.getString("type").equals("edit")) {
-            Team team = PlayerManager.getInstance(this).getPlayer(id).getTeam();
+            Team team = PlayerManager.getInstance().getPlayer(id).getTeam();
             teamView.setSelection(adapterTeams.getPosition(team));
         }
 

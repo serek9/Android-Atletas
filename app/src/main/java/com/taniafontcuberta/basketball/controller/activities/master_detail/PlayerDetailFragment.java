@@ -55,7 +55,7 @@ public class PlayerDetailFragment extends Fragment implements PlayerCallback {
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             String id = getArguments().getString(ARG_ITEM_ID);
-            mItem = PlayerManager.getInstance(this.getContext()).getPlayer(id);
+            mItem = PlayerManager.getInstance().getPlayer(id);
             assert mItem != null;
             final Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
@@ -95,7 +95,7 @@ public class PlayerDetailFragment extends Fragment implements PlayerCallback {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayerManager.getInstance(v.getContext()).deletePlayer(PlayerDetailFragment.this, mItem.getId());
+                PlayerManager.getInstance().deletePlayer(PlayerDetailFragment.this, mItem.getId());
                 Intent intent = new Intent(v.getContext(), PlayerListActivity.class);
                 startActivity(intent);
             }
