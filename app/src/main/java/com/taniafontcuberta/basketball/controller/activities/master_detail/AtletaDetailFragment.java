@@ -10,24 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.taniafontcuberta.basketball.R;
 import com.taniafontcuberta.basketball.controller.activities.add_edit.AddEditActivity;
-import com.taniafontcuberta.basketball.controller.activities.add_edit.AddEditTeamActivity;
-import com.taniafontcuberta.basketball.controller.managers.PlayerCallback;
-import com.taniafontcuberta.basketball.controller.managers.PlayerManager;
-import com.taniafontcuberta.basketball.model.Player;
+import com.taniafontcuberta.basketball.controller.managers.AtletaCallback;
+import com.taniafontcuberta.basketball.controller.managers.AtletaManager;
+import com.taniafontcuberta.basketball.model.Atleta;
 
 import java.util.List;
 
 /**
- * A fragment representing a single Player detail screen.
- * This fragment is either contained in a {@link PlayerListActivity}
+ * A fragment representing a single Atleta detail screen.
+ * This fragment is either contained in a {@link AtletaListActivity}
  * in two-pane mode (on tablets) or a {@link PlayerDetailActivity}
  * on handsets.
  */
-public class PlayerDetailFragment extends Fragment implements PlayerCallback {
+public class AtletaDetailFragment extends Fragment implements AtletaCallback {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -37,13 +35,13 @@ public class PlayerDetailFragment extends Fragment implements PlayerCallback {
     /**
      * The player content this fragment is presenting.
      */
-    private Player mItem;
+    private Atleta mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PlayerDetailFragment() {
+    public AtletaDetailFragment() {
     }
 
     @Override
@@ -55,12 +53,12 @@ public class PlayerDetailFragment extends Fragment implements PlayerCallback {
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             String id = getArguments().getString(ARG_ITEM_ID);
-            mItem = PlayerManager.getInstance().getPlayer(id);
+            mItem = AtletaManager.getInstance().getPlayer(id);
             assert mItem != null;
             final Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.getName());
+                appBarLayout.setTitle(mItem.getNombre());
             }
             FloatingActionButton edit = (FloatingActionButton) activity.findViewById(R.id.edit);
             edit.setOnClickListener(new View.OnClickListener() {
@@ -70,17 +68,6 @@ public class PlayerDetailFragment extends Fragment implements PlayerCallback {
                     intent.putExtra("id", mItem.getId().toString());
                     intent.putExtra("type", "edit");
                     startActivityForResult(intent, 0);
-                }
-            });
-            FloatingActionButton editTeam = (FloatingActionButton) activity.findViewById(R.id.edit);
-            editTeam.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    Intent intent = new Intent(view.getContext(), AddEditTeamActivity.class); // intent en fragments
-                    intent.putExtra("id", mItem.getTeam().getId().toString());
-                    intent.putExtra("type", "edit");
-                    startActivityForResult(intent, 0);
-                    return false;
                 }
             });
         }
@@ -95,32 +82,17 @@ public class PlayerDetailFragment extends Fragment implements PlayerCallback {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayerManager.getInstance().deletePlayer(PlayerDetailFragment.this, mItem.getId());
-                Intent intent = new Intent(v.getContext(), PlayerListActivity.class);
+                AtletaManager.getInstance().deletePlayer(AtletaDetailFragment.this, mItem.getId());
+                Intent intent = new Intent(v.getContext(), AtletaListActivity.class);
                 startActivity(intent);
             }
         });
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.player_detail)).setText(
-                    "Baskets: " + mItem.getBaskets().toString());
-            ((TextView) rootView.findViewById(R.id.player_detailRebounds)).setText(
-                    "Rebounds: " + mItem.getRebounds().toString());
-            ((TextView) rootView.findViewById(R.id.player_detailAssists)).setText(
-                    "Assists: " + mItem.getAssists().toString());
-            ((TextView) rootView.findViewById(R.id.player_detailFieldPosition)).setText(
-                    "Field position: " + mItem.getFieldPosition().toString());
-            ((TextView) rootView.findViewById(R.id.player_detailBirthdate)).setText(
-                    "Birthdate: " + mItem.getBirthdate());
-            ((TextView) rootView.findViewById(R.id.player_detailTeam)).setText(
-                    "Team: " + mItem.getTeam());
-        }
 
         return rootView;
     }
 
     @Override
-    public void onSuccess(List<Player> playerList) {
+    public void onSuccess(List<Atleta> atletaList) {
 
     }
 

@@ -74,16 +74,16 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/baskets"
+                    android:id="@+id/surname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Baskets"
+                    android:hint="Surname"
                     android:imeActionId="@+id/add_edit"
                     android:imeActionLabel="next"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="number"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:inputType="text" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -92,14 +92,14 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/rebounds"
+                    android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Rebounds"
+                    android:hint="Location"
                     android:imeActionId="@+id/add_edit"
                     android:imeActionLabel="Next"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -109,31 +109,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/assists"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Assists"
-                    android:imeActionId="@+id/add_edit"
-                    android:imeActionLabel="Next"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
             </android.support.design.widget.TextInputLayout>
 
-
-
-            <Spinner
-                android:id="@+id/fieldPosition"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeActionLabel="Next"
-                android:inputType="text"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"/>
 
             <DatePicker
                 android:id="@+id/birthdate"

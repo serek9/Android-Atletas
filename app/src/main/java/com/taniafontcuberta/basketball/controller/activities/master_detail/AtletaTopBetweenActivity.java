@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +18,9 @@ import android.widget.TextView;
 
 import com.taniafontcuberta.basketball.R;
 import com.taniafontcuberta.basketball.controller.activities.login.LoginActivity;
-import com.taniafontcuberta.basketball.controller.managers.PlayerCallback;
-import com.taniafontcuberta.basketball.controller.managers.PlayerManager;
-import com.taniafontcuberta.basketball.model.Player;
+import com.taniafontcuberta.basketball.controller.managers.AtletaCallback;
+import com.taniafontcuberta.basketball.controller.managers.AtletaManager;
+import com.taniafontcuberta.basketball.model.Atleta;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ import java.util.List;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class PlayerTopActivity extends AppCompatActivity implements PlayerCallback {
+public class AtletaTopBetweenActivity extends AppCompatActivity implements AtletaCallback {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -41,14 +40,14 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
      */
     private boolean mTwoPane;
     private RecyclerView recyclerView;
-    private List<Player> players;
+    private List<Atleta> atletas;
     private EditText topAttr, topAttr2;
     private Bundle typeSearch;
     private Button filtrarButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_top_list);
+        setContentView(R.layout.activity_topbetween_list);
         typeSearch = getIntent().getExtras();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -72,43 +71,19 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
             mTwoPane = true;
         }
         topAttr = (EditText) findViewById(R.id.topAttr);
+        topAttr2 = (EditText) findViewById(R.id.topAttr2);
+
         filtrarButton = (Button) findViewById(R.id.searchButton);
-
-        typeSearch = getIntent().getExtras();
-
-        switch (typeSearch.getString("id")){
-            case "name":
-                filtrarButton.setInputType(InputType.TYPE_CLASS_NUMBER);
-                filtrarButton.setHint("Filter by name");
-                setTitle("Filter by name");
-                break;
-            case "baskets":
-                filtrarButton.setHint("Filter by baskets");
-                setTitle("Filter by baskets");
-                filtrarButton.setInputType(1);
-                break;
-            case "birthdate":
-                filtrarButton.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
-                filtrarButton.setHint("Filter by birthdate");
-                setTitle("Filter by birthdate");
-                break;
-        }
-
         filtrarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (typeSearch.getString("id")){
-                    case "name":
-                        PlayerManager.getInstance().getPlayerByName(PlayerTopActivity.this, topAttr.getText().toString());
-                        break;
-                    case "baskets":
-                        PlayerManager.getInstance().getPlayersByBaskets(PlayerTopActivity.this, Integer.parseInt(topAttr.getText().toString()));
-                        break;
-                    case "birthdate":
-                        PlayerManager.getInstance().getPlayersByBirthdate(PlayerTopActivity.this, topAttr.getText().toString());
-                        break;
-                }
 
+                if (topAttr2.getText().toString().equals("")) {
+                    AtletaManager.getInstance().getPlayersByBirthdate(AtletaTopBetweenActivity.this, topAttr.getText().toString());
+                } else {
+                    AtletaManager.getInstance().getPlayersByBirthdateBetween(AtletaTopBetweenActivity.this, topAttr.getText().toString(), topAttr2.getText().toString());
+
+                }
             }
         });
     }
@@ -116,19 +91,19 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        PlayerManager.getInstance().getAllPlayers(PlayerTopActivity.this);
+        AtletaManager.getInstance().getAllPlayers(AtletaTopBetweenActivity.this);
 
-        //    PlayerManager.getInstance(this.getApplicationContext()).getAllPlayers(PlayerTopActivity.this);
+        //    AtletaManager.getInstance(this.getApplicationContext()).getAllPlayers(AtletaTopActivity.this);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        Log.i("setupRecyclerView", "                     " + players);
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(players));
+        Log.i("setupRecyclerView", "                     " + atletas);
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(atletas));
     }
 
     @Override
-    public void onSuccess(List<Player> playerList) {
-        players = playerList;
+    public void onSuccess(List<Atleta> atletaList) {
+        atletas = atletaList;
         setupRecyclerView(recyclerView);
     }
 
@@ -139,7 +114,7 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
 
     @Override
     public void onFailure(Throwable t) {
-        Intent i = new Intent(PlayerTopActivity.this, LoginActivity.class);
+        Intent i = new Intent(AtletaTopBetweenActivity.this, LoginActivity.class);
         startActivity(i);
         finish();
     }
@@ -147,9 +122,9 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<Player> mValues;
+        private final List<Atleta> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<Player> items) {
+        public SimpleItemRecyclerViewAdapter(List<Atleta> items) {
             mValues = items;
         }
 
@@ -164,15 +139,15 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).getId().toString());
-            holder.mContentView.setText(mValues.get(position).getName());
+            holder.mContentView.setText(mValues.get(position).getNombre());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(PlayerDetailFragment.ARG_ITEM_ID, holder.mItem.getId().toString());
-                        PlayerDetailFragment fragment = new PlayerDetailFragment();
+                        arguments.putString(AtletaDetailFragment.ARG_ITEM_ID, holder.mItem.getId().toString());
+                        AtletaDetailFragment fragment = new AtletaDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.player_detail_container, fragment)
@@ -180,7 +155,7 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, PlayerDetailActivity.class);
-                        intent.putExtra(PlayerDetailFragment.ARG_ITEM_ID, holder.mItem.getId().toString());
+                        intent.putExtra(AtletaDetailFragment.ARG_ITEM_ID, holder.mItem.getId().toString());
 
                         context.startActivity(intent);
                     }
@@ -197,7 +172,7 @@ public class PlayerTopActivity extends AppCompatActivity implements PlayerCallba
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public Player mItem;
+            public Atleta mItem;
 
             public ViewHolder(View view) {
                 super(view);

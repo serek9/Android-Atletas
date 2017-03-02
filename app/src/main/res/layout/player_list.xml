@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.taniafontcuberta.basketball.controller.activities.master_detail.PlayerListActivity"
+    tools:context="com.taniafontcuberta.basketball.controller.activities.master_detail.AtletaListActivity"
     tools:listitem="@layout/player_list_content" />

@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.taniafontcuberta.basketball.R;
-import com.taniafontcuberta.basketball.controller.activities.master_detail.PlayerListActivity;
+import com.taniafontcuberta.basketball.controller.activities.master_detail.AtletaListActivity;
 import com.taniafontcuberta.basketball.controller.managers.UserLoginManager;
 import com.taniafontcuberta.basketball.model.UserToken;
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, PlayerListActivity.class);
+                Intent i = new Intent(MainActivity.this, AtletaListActivity.class);
                 startActivity(i);
             }
         });

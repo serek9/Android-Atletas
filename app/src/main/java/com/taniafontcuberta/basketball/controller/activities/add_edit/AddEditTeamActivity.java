@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.taniafontcuberta.basketball.R;
-import com.taniafontcuberta.basketball.controller.activities.master_detail.PlayerListActivity;
+import com.taniafontcuberta.basketball.controller.activities.master_detail.AtletaListActivity;
 import com.taniafontcuberta.basketball.controller.managers.TeamCallback;
 import com.taniafontcuberta.basketball.controller.managers.TeamManager;
 import com.taniafontcuberta.basketball.model.Team;
@@ -151,7 +151,7 @@ public class AddEditTeamActivity extends AppCompatActivity implements TeamCallba
                 Toast.makeText(AddEditTeamActivity.this, "Edited  :   " + team.getName(), Toast.LENGTH_LONG).show();
 
             }
-            Intent i = new Intent(v.getContext(), PlayerListActivity.class);
+            Intent i = new Intent(v.getContext(), AtletaListActivity.class);
             startActivity(i);
 
         }

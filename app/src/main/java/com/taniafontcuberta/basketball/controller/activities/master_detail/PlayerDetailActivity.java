@@ -2,21 +2,18 @@ package com.taniafontcuberta.basketball.controller.activities.master_detail;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.taniafontcuberta.basketball.R;
 
 /**
- * An activity representing a single Player detail screen. This
+ * An activity representing a single Atleta detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link PlayerListActivity}.
+ * in a {@link AtletaListActivity}.
  */
 public class PlayerDetailActivity extends AppCompatActivity {
 
@@ -46,9 +43,9 @@ public class PlayerDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(PlayerDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(PlayerDetailFragment.ARG_ITEM_ID));
-            PlayerDetailFragment fragment = new PlayerDetailFragment();
+            arguments.putString(AtletaDetailFragment.ARG_ITEM_ID,
+                    getIntent().getStringExtra(AtletaDetailFragment.ARG_ITEM_ID));
+            AtletaDetailFragment fragment = new AtletaDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.player_detail_container, fragment)
@@ -66,7 +63,7 @@ public class PlayerDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, PlayerListActivity.class));
+            navigateUpTo(new Intent(this, AtletaListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

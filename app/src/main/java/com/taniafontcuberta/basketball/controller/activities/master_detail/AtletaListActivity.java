@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,15 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.taniafontcuberta.basketball.R;
+import com.taniafontcuberta.basketball.controller.activities.add_edit.AddEditActivity;
 import com.taniafontcuberta.basketball.controller.activities.login.LoginActivity;
-import com.taniafontcuberta.basketball.controller.managers.PlayerCallback;
-import com.taniafontcuberta.basketball.controller.managers.PlayerManager;
-import com.taniafontcuberta.basketball.model.Player;
+import com.taniafontcuberta.basketball.controller.managers.AtletaCallback;
+import com.taniafontcuberta.basketball.controller.managers.AtletaManager;
+import com.taniafontcuberta.basketball.model.Atleta;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import java.util.List;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class PlayerTopBetweenActivity extends AppCompatActivity implements PlayerCallback {
+public class AtletaListActivity extends AppCompatActivity implements AtletaCallback {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -40,15 +40,12 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
      */
     private boolean mTwoPane;
     private RecyclerView recyclerView;
-    private List<Player> players;
-    private EditText topAttr, topAttr2;
-    private Bundle typeSearch;
-    private Button filtrarButton;
+    private List<Atleta> atletas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topbetween_list);
-        typeSearch = getIntent().getExtras();
+        setContentView(R.layout.activity_player_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,6 +57,16 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),AddEditActivity.class);
+                intent.putExtra("type","add");
+                startActivityForResult(intent, 0);
+            }
+        });
+
         recyclerView = (RecyclerView) findViewById(R.id.player_list);
         assert recyclerView != null;
 
@@ -70,40 +77,22 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
-        topAttr = (EditText) findViewById(R.id.topAttr);
-        topAttr2 = (EditText) findViewById(R.id.topAttr2);
-
-        filtrarButton = (Button) findViewById(R.id.searchButton);
-        filtrarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (topAttr2.getText().toString().equals("")) {
-                    PlayerManager.getInstance().getPlayersByBirthdate(PlayerTopBetweenActivity.this, topAttr.getText().toString());
-                } else {
-                    PlayerManager.getInstance().getPlayersByBirthdateBetween(PlayerTopBetweenActivity.this, topAttr.getText().toString(), topAttr2.getText().toString());
-
-                }
-            }
-        });
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        PlayerManager.getInstance().getAllPlayers(PlayerTopBetweenActivity.this);
-
-        //    PlayerManager.getInstance(this.getApplicationContext()).getAllPlayers(PlayerTopActivity.this);
+        AtletaManager.getInstance().getAllPlayers(AtletaListActivity.this);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        Log.i("setupRecyclerView", "                     " + players);
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(players));
+        Log.i("setupRecyclerView", "                     " + atletas);
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(atletas));
     }
 
     @Override
-    public void onSuccess(List<Player> playerList) {
-        players = playerList;
+    public void onSuccess(List<Atleta> atletaList) {
+        atletas = atletaList;
         setupRecyclerView(recyclerView);
     }
 
@@ -114,7 +103,7 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
 
     @Override
     public void onFailure(Throwable t) {
-        Intent i = new Intent(PlayerTopBetweenActivity.this, LoginActivity.class);
+        Intent i = new Intent(AtletaListActivity.this, LoginActivity.class);
         startActivity(i);
         finish();
     }
@@ -122,9 +111,9 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<Player> mValues;
+        private final List<Atleta> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<Player> items) {
+        public SimpleItemRecyclerViewAdapter(List<Atleta> items) {
             mValues = items;
         }
 
@@ -139,15 +128,17 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).getId().toString());
-            holder.mContentView.setText(mValues.get(position).getName());
+            holder.mContentView.setText(mValues.get(position).getNombre());
+            holder.mContentView2.setText(mValues.get(position).getApellido());
+            holder.mContentView3.setText(mValues.get(position).getNacionalidad());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(PlayerDetailFragment.ARG_ITEM_ID, holder.mItem.getId().toString());
-                        PlayerDetailFragment fragment = new PlayerDetailFragment();
+                        arguments.putString(AtletaDetailFragment.ARG_ITEM_ID, holder.mItem.getId().toString());
+                        AtletaDetailFragment fragment = new AtletaDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.player_detail_container, fragment)
@@ -155,7 +146,7 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, PlayerDetailActivity.class);
-                        intent.putExtra(PlayerDetailFragment.ARG_ITEM_ID, holder.mItem.getId().toString());
+                        intent.putExtra(AtletaDetailFragment.ARG_ITEM_ID, holder.mItem.getId().toString());
 
                         context.startActivity(intent);
                     }
@@ -172,13 +163,17 @@ public class PlayerTopBetweenActivity extends AppCompatActivity implements Playe
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public Player mItem;
+            public final TextView mContentView2;
+            public final TextView mContentView3;
+            public Atleta mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
+                mContentView2 = (TextView) view.findViewById(R.id.content2);
+                mContentView3 = (TextView) view.findViewById(R.id.content3);
             }
 
             @Override
