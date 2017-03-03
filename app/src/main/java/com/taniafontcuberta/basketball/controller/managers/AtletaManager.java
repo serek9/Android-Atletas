@@ -2,6 +2,8 @@ package com.taniafontcuberta.basketball.controller.managers;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.taniafontcuberta.basketball.controller.services.AtletaService;
 import com.taniafontcuberta.basketball.model.Atleta;
 import com.taniafontcuberta.basketball.util.CustomProperties;
@@ -21,10 +23,12 @@ public class AtletaManager {
     private AtletaService atletaService;
 
     private AtletaManager() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(CustomProperties.baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
 
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .create();
+        retrofit = new Retrofit.Builder().baseUrl(CustomProperties.baseUrl).
+                addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         atletaService = retrofit.create(AtletaService.class);
